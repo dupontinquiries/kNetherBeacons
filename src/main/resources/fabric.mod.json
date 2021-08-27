@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "knb",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "kNetherBeacons",
+  "description": "These beacons are out of this world!",
   "authors": [
-    "Me!"
+    "Impakt Designs"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -19,11 +19,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.fabricmc.example.KNB"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "knb.mixins.json"
   ],
 
   "depends": {
