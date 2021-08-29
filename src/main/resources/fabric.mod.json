@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 1.0,
   "id": "knb",
   "version": "${version}",
 
@@ -14,12 +14,15 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/knb/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.KNB"
+      "net.fabricmc.knb.KNB"
+    ],
+    "client": [
+      "net.fabricmc.knb.client.ClientKNB"
     ]
   },
   "mixins": [

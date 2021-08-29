@@ -1,11 +1,11 @@
-package net.fabricmc.example.blocks;
+package net.fabricmc.knb.blocks;
 
-import net.minecraft.block.AbstractBlock.Settings;
+import net.fabricmc.knb.KNB;
+import net.fabricmc.knb.entity.NetherBeaconEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Stainable;
-import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -29,31 +29,39 @@ import org.jetbrains.annotations.Nullable;
  * It sounds different compared to the regular beacon
  */
 
-public class NetherBeaconBlock extends BlockWithEntity implements Stainable {
-    public NetherBeaconBlock(Settings settings) {
+public class NetherBeaconBlock2 extends BlockWithEntity implements Stainable {
+    public NetherBeaconBlock2(Settings settings) {
         super(settings);
     }
 
     public DyeColor getColor() {
-        return DyeColor.WHITE;
+        return DyeColor.RED;
     }
 
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new BeaconBlockEntity(pos, state);
+        return new NetherBeaconEntity(pos, state);
     }
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntityType.BEACON, BeaconBlockEntity::tick);
+        return checkType(type, KNB.netherBeaconEntityType, NetherBeaconEntity::tick);
     }
 
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    /*
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, ExampleMod.DEMO_BLOCK_ENTITY, (world1, pos, state1, be) -> DemoBlockEntity.tick(world1, pos, state1, be));
+    }
+
+     */
+
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) { // k throwing error on server
         if (world.isClient) {
             return ActionResult.SUCCESS;
         } else {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof BeaconBlockEntity) {
-                player.openHandledScreen((BeaconBlockEntity)blockEntity);
+            if (blockEntity instanceof NetherBeaconEntity) {
+                player.openHandledScreen((NetherBeaconEntity)blockEntity);
                 player.incrementStat(Stats.INTERACT_WITH_BEACON);
             }
 
@@ -68,8 +76,8 @@ public class NetherBeaconBlock extends BlockWithEntity implements Stainable {
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         if (itemStack.hasCustomName()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof BeaconBlockEntity) {
-                ((BeaconBlockEntity)blockEntity).setCustomName(itemStack.getName());
+            if (blockEntity instanceof NetherBeaconEntity) {
+                ((NetherBeaconEntity)blockEntity).setCustomName(itemStack.getName());
             }
         }
 
