@@ -1,19 +1,11 @@
 package net.fabricmc.knb.client;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.knb.KNB;
-import net.fabricmc.knb.entity.EntitiesKNB;
-import net.fabricmc.knb.entity.NetherBeaconEntity;
 import net.fabricmc.knb.render.NetherBeaconEntityRenderer;
 import net.fabricmc.knb.ui.NetherBeaconScreen;
-import net.fabricmc.knb.ui.NetherBeaconScreenHandler;
-import net.fabricmc.knb.ui.ScreenHandlerTypeKNB;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.util.Identifier;
 
 public class ClientKNB implements ClientModInitializer {
 

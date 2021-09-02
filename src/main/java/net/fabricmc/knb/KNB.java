@@ -6,11 +6,8 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.knb.blocks.BlocksKNB;
 import net.fabricmc.knb.blocks.blockitems.BlockItemsKNB;
-import net.fabricmc.knb.entity.EntitiesKNB;
 import net.fabricmc.knb.entity.NetherBeaconEntity;
 import net.fabricmc.knb.ui.NetherBeaconScreenHandler;
-import net.fabricmc.knb.ui.ScreenHandlerTypeKNB;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;

@@ -1,7 +1,6 @@
 package net.fabricmc.knb.blocks;
 
 import net.fabricmc.knb.KNB;
-import net.fabricmc.knb.entity.EntitiesKNB;
 import net.fabricmc.knb.entity.NetherBeaconEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
