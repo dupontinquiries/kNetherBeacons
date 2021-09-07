@@ -2,14 +2,20 @@ package net.fabricmc.knb.ui;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
+
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.knb.KNB;
 import net.fabricmc.knb.entity.NetherBeaconEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ScreenTexts;
+import net.minecraft.client.gui.screen.ingame.BeaconScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -21,7 +27,12 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.UpdateBeaconC2SPacket;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
+import net.minecraft.screen.BeaconScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.text.LiteralText;
@@ -142,7 +153,7 @@ public class NetherBeaconScreen extends HandledScreen<NetherBeaconScreenHandler>
         this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.DIAMOND), i + 41 + 22, j + 109);
         this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GOLD_INGOT), i + 42 + 44, j + 109);
          */
-        this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.WITHER_SKELETON_SKULL), i + 42 + 66, j + 109); // k changed to wither skull
+        this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GOLD_INGOT), i + 42 + 66, j + 109); // k changed to wither skull
         this.itemRenderer.zOffset = 0.0F;
     }
 
@@ -168,6 +179,19 @@ public class NetherBeaconScreen extends HandledScreen<NetherBeaconScreenHandler>
         }
 
         public void onPress() {
+            //NetherBeaconScreen.this.client.getNetworkHandler().sendPacket(new UpdateBeaconC2SPacket(StatusEffect.getRawId(NetherBeaconScreen.this.primaryEffect), StatusEffect.getRawId(NetherBeaconScreen.this.secondaryEffect)));\
+            //HashMap<String, Integer> m = new HashMap<>();
+            //NbtCompound nbt = new NbtCompound();
+            //nbt.putInt("Primary", StatusEffect.getRawId(NetherBeaconScreen.this.primaryEffect));
+            //nbt.putInt("Secondary", StatusEffect.getRawId(NetherBeaconScreen.this.secondaryEffect));
+            //NetherBeaconScreen.this.client.getNetworkHandler().sendPacket( new BlockEntityUpdateS2CPacket( PacketByteBufs.create().setInt(1, StatusEffect.getRawId(NetherBeaconScreen.this.primaryEffect) ).setInt(2, StatusEffect.getRawId(NetherBeaconScreen.this.secondaryEffect) ) ) );
+            //NetherBeaconScreen.this.client.getNetworkHandler().sendPacket( new BlockEntityUpdateS2CPacket( PacketByteBufs.create().setInt(1, StatusEffect.getRawId(NetherBeaconScreen.this.primaryEffect) ).setInt(2, StatusEffect.getRawId(NetherBeaconScreen.this.secondaryEffect) ) ) );
+            //NetherBeaconScreen.this.client.getNetworkHandler().sendPacket( new BlockEntityUpdateS2CPacket( PacketByteBufs.copy(PacketByteBuf.getVarIntLength(2)).writeNbt( nbt ) ) );
+            //NetherBeaconScreen.this.client.getNetworkHandler().sendPacket( new BlockUpdateS2CPacket( PacketByteBufs.create().writeNbt( nbt ) ) );
+            //m.put("primary", StatusEffect.getRawId(NetherBeaconScreen.this.primaryEffect));
+            //m.put("secondary", StatusEffect.getRawId(NetherBeaconScreen.this.secondaryEffect));
+            //NetherBeaconScreen.this.client.getNetworkHandler().sendPacket(new BlockUpdateS2CPacket(PacketByteBufs.create()writeIntArray(new int[]{StatusEffect.getRawId(NetherBeaconScreen.this.primaryEffect), StatusEffect.getRawId(NetherBeaconScreen.this.secondaryEffect)})));
+            //NetherBeaconScreen.this.client.getNetworkHandler().sendPacket(new BlockUpdateS2CPacket(PacketByteBufs.create()writeIntArray(new int[]{StatusEffect.getRawId(NetherBeaconScreen.this.primaryEffect), StatusEffect.getRawId(NetherBeaconScreen.this.secondaryEffect)})));
             NetherBeaconScreen.this.client.getNetworkHandler().sendPacket(new UpdateBeaconC2SPacket(StatusEffect.getRawId(NetherBeaconScreen.this.primaryEffect), StatusEffect.getRawId(NetherBeaconScreen.this.secondaryEffect)));
             NetherBeaconScreen.this.client.player.closeHandledScreen();
         }

@@ -6,6 +6,7 @@
   "mixins": [
   ],
   "client": [
+    "C2SInject",
     "MixinKNB"
   ],
   "injectors": {

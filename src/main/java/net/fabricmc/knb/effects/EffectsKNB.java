@@ -40,11 +40,11 @@ public class EffectsKNB {
 
         soulboundEffect = Registry.register(Registry.STATUS_EFFECT, soulboundEffectIdentifier, (new SoulboundEffect(StatusEffectType.HARMFUL, 4866583))
                 //.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, "55FCED67-E92A-486E-9800-B47F202C4386", -0.10000000149011612D, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
-                .addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, "55FCED67-E92A-486E-9800-B47F202C4386", -.6, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
-                .addAttributeModifier(EntityAttributes.GENERIC_MAX_HEALTH, "55FCED67-E92A-486E-9800-B47F202C4386", -.6, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
+                .addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, "55FCED67-E92A-486E-9800-B47F202C4386", -.6, EntityAttributeModifier.Operation.MULTIPLY_TOTAL) );
+                //.addAttributeModifier(EntityAttributes.GENERIC_MAX_HEALTH, "55FCED67-E92A-486E-9800-B47F202C4386", -.6, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
                 //.addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED,"55FCED67-E92A-486E-9800-B47F202C4386", -.8, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
                 //.addAttributeModifier(EntityAttributes.GENERIC_FLYING_SPEED,"55FCED67-E92A-486E-9800-B47F202C4386", -.8, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
-                .addAttributeModifier(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, "55FCED67-E92A-486E-9800-B47F202C4386", -.8, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+                //.addAttributeModifier(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, "55FCED67-E92A-486E-9800-B47F202C4386", -.8, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
 
         // amount = -0.10000000149011612D
 
