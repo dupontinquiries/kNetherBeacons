@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.fabricmc.knb.KNB;
+import net.fabricmc.knb.effects.EffectsKNB;
 import net.fabricmc.knb.ui.NetherBeaconScreenHandler;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Block;
@@ -16,7 +17,9 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.Stainable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectType;
@@ -30,6 +33,7 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.server.WorldGenerationProgressLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -39,8 +43,14 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.text.Text.Serializer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.World;
 import net.minecraft.world.Heightmap.Type;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkRandom;
+import net.minecraft.world.gen.WorldGenRandom;
 import org.jetbrains.annotations.Nullable;
 
 public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandlerFactory {
@@ -225,8 +235,127 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
 
     private static void applyPlayerEffects(World world, BlockPos pos, int beaconLevel, @Nullable StatusEffect primaryEffect, @Nullable StatusEffect secondaryEffect) {
         if (!world.isClient) {
+            //double d = (double)(beaconLevel * 10 + 10);
+            double d = (double)(beaconLevel * 18 + 18);
+            int level = 0;
+            if (beaconLevel >= 4 && primaryEffect == secondaryEffect) {
+                level = 1;
+            }
+
+            int jtime = (9 + beaconLevel * 2) * 20;
+            Box box = (new Box(pos)).expand(d).stretch(0.0D, (double)world.getHeight(), 0.0D);
+
+            List<LivingEntity> list = world.getNonSpectatingEntities(LivingEntity.class, box);
+            Iterator var11 = list.iterator();
+
+            LivingEntity le;
+            while(var11.hasNext()) {
+                le = (LivingEntity)var11.next();
+                le.addStatusEffect(new StatusEffectInstance(EffectsKNB.soulboundEffect, jtime, level, true, true));
+                le.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, jtime, 0, true, true));
+                le.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, jtime, 0, true, true));
+            }
+
+            List<TntEntity> list_ = world.getNonSpectatingEntities(TntEntity.class, box);
+            Iterator var11_ = list_.iterator();
+
+            TntEntity le_;
+            while(var11.hasNext()) {
+                le_ = (TntEntity)var11_.next();
+                le_.remove(Entity.RemovalReason.KILLED);
+            }
+
+            /*
+            BlockPos bp1 = new BlockPos(box.minX, box.minY, box.minZ), bp2 = new BlockPos(box.maxX, box.maxY, box.maxZ);
+            int dx = (int) box.getXLength(), dy = (int) box.getYLength(), dz = (int) box.getZLength();
+
+            for (int i = 0; i < dx; ++i) {
+                for (int j = 0; j < dx; ++j) {
+                    for (int k = 0; k < dx; ++k) {
+
+                        BlockPos blockPos = bp1.add(i, j, k);
+
+                    }
+                }
+            }
+
+            // */
+
+            /*
+            {
+                BlockPos b = new BlockPos(box.minX + i, box.minY + j, box.minZ + k);
+                Chunk chunk = world.getChunk(b);
+                ChunkPos chunkPos = chunk.getPos();
+                int i2 = chunkPos.getStartX();
+                int k2 = chunkPos.getStartZ();
+                BlockPos blockPos = new BlockPos(i2, world.getBottomY(), k2);
+                Biome biome = world.getBiomeForNoiseGen(chunkPos);
+                //Biome biome = this.populationSource.getBiomeForNoiseGen(chunkPos);
+                ChunkRandom chunkRandom = new ChunkRandom();
+                //world.getBiomeForNoiseGen(chunkPos).getGenerationSettings().getFeatures().see
+                //long l = chunkRandom.setPopulationSeed(.getSeed(), i2, k2);
+                //biome.generateFeatureStep(accessor, this, region, l, chunkRandom, blockPos);
+                ChunkRegion region = chunk;
+                //world.getGeneratorStoredBiome(b.getX(), b.getY(), b.getZ()).
+            }
+             */
+
+            // get block data
+
+            //this.getWorld().get
+
+            /*
+
+
+
+            public void generateFeatures(ChunkRegion region, StructureAccessor accessor) {
+        ChunkPos chunkPos = region.getCenterPos();
+        int i = chunkPos.getStartX();
+        int j = chunkPos.getStartZ();
+        BlockPos blockPos = new BlockPos(i, region.getBottomY(), j);
+        Biome biome = this.populationSource.getBiomeForNoiseGen(chunkPos);
+        ChunkRandom chunkRandom = new ChunkRandom();
+        long l = chunkRandom.setPopulationSeed(region.getSeed(), i, j);
+
+        try {
+            biome.generateFeatureStep(accessor, this, region, l, chunkRandom, blockPos);
+        } catch (Exception var13) {
+            CrashReport crashReport = CrashReport.create(var13, "Biome decoration");
+            crashReport.addElement("Generation").add("CenterX", chunkPos.x).add("CenterZ", chunkPos.z).add("Seed", l).add("Biome", biome);
+            throw new CrashException(crashReport);
+        }
+    }
+
+
+
+            List<LivingEntity> list = world.getNonSpectatingEntities(LivingEntity.class, box);
+            Iterator var11 = list.iterator();
+
+            LivingEntity le;
+            while(var11.hasNext()) {
+                le = (LivingEntity)var11.next();
+                le.addStatusEffect(new StatusEffectInstance(primaryEffect, j, i, true, true));
+            }
+
+            if (beaconLevel >= 4 && primaryEffect != secondaryEffect && secondaryEffect != null) {
+                var11 = list.iterator();
+
+                while(var11.hasNext()) {
+                    le = (PlayerEntity)var11.next();
+                    le.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, 0, true, true));
+                }
+            }
+            */
+
+        }
+    }
+
+    /*
+    private static void applyPlayerEffects(World world, BlockPos pos, int beaconLevel, @Nullable StatusEffect primaryEffect, @Nullable StatusEffect secondaryEffect) {
+        if (!world.isClient) {
             // if (!world.isClient && primaryEffect != null) {
-            primaryEffect = StatusEffects.WITHER;
+            //primaryEffect = StatusEffects.WITHER;
+            primaryEffect = EffectsKNB.reactiveEffect;
             double d = (double)(beaconLevel * 10 + 10);
             int i = 0;
             if (beaconLevel >= 4 && primaryEffect == secondaryEffect) {
@@ -255,6 +384,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
 
         }
     }
+    */
 
     public static void playSound(World world, BlockPos pos, SoundEvent sound) {
         world.playSound((PlayerEntity)null, pos, sound, SoundCategory.BLOCKS, 1.0F, 1.0F);
