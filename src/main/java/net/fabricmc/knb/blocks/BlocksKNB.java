@@ -12,7 +12,7 @@ public class BlocksKNB {
     public static final NetherBeaconBlock netherBeaconBlock; // = new NetherBeaconBlock(FabricBlockSettings.copyOf(Blocks.BEACON));
 
     static {
-        netherBeaconBlock = Registry.register(Registry.BLOCK, KNB.netherBeaconIdentifier, new NetherBeaconBlock(FabricBlockSettings.copyOf(Blocks.BEACON).breakInstantly()));
+        netherBeaconBlock = Registry.register(Registry.BLOCK, KNB.netherBeaconIdentifier, new NetherBeaconBlock(FabricBlockSettings.copyOf(Blocks.BEACON)));
     }
 
     public static void blocks(String modName) {

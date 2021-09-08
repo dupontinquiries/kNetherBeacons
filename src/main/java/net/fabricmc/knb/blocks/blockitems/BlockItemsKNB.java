@@ -1,5 +1,6 @@
 package net.fabricmc.knb.blocks.blockitems;
 
+import net.fabricmc.knb.KNB;
 import net.fabricmc.knb.blocks.BlocksKNB;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -13,7 +14,7 @@ public class BlockItemsKNB {
 
     public static void items(String modName) {
 
-        Registry.register(Registry.ITEM, new Identifier(modName, "nether_beacon"),
+        Registry.register(Registry.ITEM, KNB.netherBeaconIdentifier,
                 new BlockItem(BlocksKNB.netherBeaconBlock, BUILDING_BLOCKS));
 
     }

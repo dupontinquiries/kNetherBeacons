@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "knb:block/nether_beacon_deactivated"
+  }
+}

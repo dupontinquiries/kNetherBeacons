@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class EffectsKNB {
 
+    /*
     public static ReactiveEffect reactiveEffect;
     public static Identifier reactiveEffectIdentifier = new Identifier(KNB.modName, "reactive_effect");
 
@@ -31,8 +32,13 @@ public class EffectsKNB {
 
     public static StatusEffect soulboundEffect;
     public static Identifier soulboundEffectIdentifier = new Identifier(KNB.modName, "soulbound_effect");
+     */
+
+    public static StatusEffect guardianEffect;
+    public static Identifier guardianEffectIdentifier = new Identifier(KNB.modName, "guardian");
 
     static {
+        /*
         int idNumber = -1;
         reactiveEffect = Registry.register(Registry.STATUS_EFFECT, reactiveEffectIdentifier, new ReactiveEffect());
         preserverEffect = Registry.register(Registry.STATUS_EFFECT, preserverEffectIdentifier, new PreserverEffect());
@@ -44,7 +50,13 @@ public class EffectsKNB {
                 //.addAttributeModifier(EntityAttributes.GENERIC_MAX_HEALTH, "55FCED67-E92A-486E-9800-B47F202C4386", -.6, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
                 //.addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED,"55FCED67-E92A-486E-9800-B47F202C4386", -.8, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
                 //.addAttributeModifier(EntityAttributes.GENERIC_FLYING_SPEED,"55FCED67-E92A-486E-9800-B47F202C4386", -.8, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
-                //.addAttributeModifier(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, "55FCED67-E92A-486E-9800-B47F202C4386", -.8, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+                //.addAttributeModifier(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, "55FCED67-E92A-486E-9800-B47F202C4386", -.8, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));\
+         */
+
+        guardianEffect = Registry.register(Registry.STATUS_EFFECT, guardianEffectIdentifier, (new BaseEffect(StatusEffectType.BENEFICIAL, 4866583))
+                .addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, "55FCED67-E92A-486E-9800-B47F202C4386", 4, EntityAttributeModifier.Operation.ADDITION)
+                //.addAttributeModifier(EntityAttributes.GENERIC_ARMOR, "55FCED67-E92A-486E-9800-B47F202C4386", 1, EntityAttributeModifier.Operation.ADDITION)
+                .addAttributeModifier(EntityAttributes.GENERIC_ARMOR, "55FCED67-E92A-486E-9800-B47F202C4386", 6, EntityAttributeModifier.Operation.ADDITION));
 
         // amount = -0.10000000149011612D
 

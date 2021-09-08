@@ -22,7 +22,7 @@ public class KNB implements ModInitializer {
 	// nether beacon
 	public static BlockEntityType<NetherBeaconEntity> netherBeaconEntityType;
 	public static final ScreenHandlerType<NetherBeaconScreenHandler> beaconScreen;
-	public static final Identifier netherBeaconIdentifier = new Identifier(modName, "nether_beacon_block");
+	public static final Identifier netherBeaconIdentifier = new Identifier(modName, "nether_beacon");
 	//public static final ScreenHandlerType<NetherBeaconScreenHandler> netherBeaconScreen;
 
 	static {
