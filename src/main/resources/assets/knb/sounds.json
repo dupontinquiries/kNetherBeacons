@@ -1,0 +1,12 @@
+{
+  "altitude": {
+    "category": "master",
+    "subtitle": "Altitude",
+    "sounds": [
+      {
+        "name": "knb:altitude",
+        "stream": false
+      }
+    ]
+  }
+}

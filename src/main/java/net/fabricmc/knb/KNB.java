@@ -11,8 +11,11 @@ import net.fabricmc.knb.entity.NetherBeaconEntity;
 import net.fabricmc.knb.ui.NetherBeaconScreenHandler;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import java.util.Vector;
 
 public class KNB implements ModInitializer {
 
@@ -25,12 +28,23 @@ public class KNB implements ModInitializer {
 	public static final Identifier netherBeaconIdentifier = new Identifier(modName, "nether_beacon");
 	//public static final ScreenHandlerType<NetherBeaconScreenHandler> netherBeaconScreen;
 
+	// music discs
+	//public static Vector<String> musicDiscs = new Vector<String>();
+	public static final Identifier altitudeIdentifier = new Identifier(modName, "altitude");
+	public static final SoundEvent altitudeMusicEvent = new SoundEvent(altitudeIdentifier);
+	//public static final Identifier jamiesname_shulk_ID = id("jamiesname_shulk");
+	//public static final SoundEvent jamiesname_shulkEvent = new SoundEvent(jamiesname_shulk_ID);
+
 	static {
 		// UI
 		beaconScreen = ScreenHandlerRegistry.registerSimple(netherBeaconIdentifier, NetherBeaconScreenHandler::new);
 		// entity
 		//netherBeaconEntityType = Registry.register(Registry.BLOCK_ENTITY_TYPE, netherBeaconIdentifier, FabricBlockEntityTypeBuilder.create(NetherBeaconEntity::new, BlocksKNB.NETHER_BEACON).build());
 		netherBeaconEntityType = Registry.register(Registry.BLOCK_ENTITY_TYPE, netherBeaconIdentifier, FabricBlockEntityTypeBuilder.create(NetherBeaconEntity::new, BlocksKNB.netherBeaconBlock).build());
+
+		// music discs
+		Registry.register(Registry.SOUND_EVENT, altitudeIdentifier, altitudeMusicEvent);
+		//musicDiscs.add("altitude");
 	}
 
 	@Override
