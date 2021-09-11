@@ -471,7 +471,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
         //EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.SPEED, StatusEffects.HASTE}, {StatusEffects.RESISTANCE, StatusEffects.JUMP_BOOST}, {StatusEffects.STRENGTH}, {StatusEffects.REGENERATION}};
         //EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.HERO_OF_THE_VILLAGE, StatusEffects.INSTANT_DAMAGE}, {StatusEffects.INVISIBILITY, StatusEffects.WITHER},
         //        {StatusEffects.LEVITATION}, {StatusEffects.FIRE_RESISTANCE}};
-        EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.GLOWING, StatusEffects.INVISIBILITY, StatusEffects.SLOWNESS}, {StatusEffects.WITHER, StatusEffects.LEVITATION, StatusEffects.SLOW_FALLING},
+        EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.GLOWING, StatusEffects.INVISIBILITY, StatusEffects.SLOWNESS, StatusEffects.MINING_FATIGUE}, {StatusEffects.WITHER, StatusEffects.LEVITATION, StatusEffects.SLOW_FALLING},
                 {StatusEffects.INSTANT_DAMAGE, StatusEffects.SATURATION, StatusEffects.WATER_BREATHING, EffectsKNB.guardianEffect}, {StatusEffects.FIRE_RESISTANCE}};
         // EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.SPEED, StatusEffects.HASTE}, {StatusEffects.RESISTANCE, StatusEffects.JUMP_BOOST}, {StatusEffects.STRENGTH}, {StatusEffects.REGENERATION}};
         // k swap out effects

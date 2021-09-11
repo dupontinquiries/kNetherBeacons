@@ -165,7 +165,7 @@ public class NetherBeaconScreenHandler extends ScreenHandler {
     }
 
     public boolean hasPayment() {
-        return true; //!this.payment.getStack(0).isEmpty();
+        return !this.payment.getStack(0).isEmpty();
     }
 
     private class PaymentSlot extends Slot {
@@ -174,7 +174,8 @@ public class NetherBeaconScreenHandler extends ScreenHandler {
         }
 
         public boolean canInsert(ItemStack stack) {
-            return true;
+            //return true;
+            return stack.getItem() == Items.GOLD_INGOT.asItem() || stack.getItem() == Items.WITHER_SKELETON_SKULL;
             //return stack.getItem() == Items.GOLD_INGOT.asItem();
             //return stack.getItem() == Items.WITHER_SKELETON_SKULL;
             //return stack.isIn(ItemTags.BEACON_PAYMENT_ITEMS);

@@ -153,6 +153,7 @@ public class NetherBeaconScreen extends HandledScreen<NetherBeaconScreenHandler>
         this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.DIAMOND), i + 41 + 22, j + 109);
         this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GOLD_INGOT), i + 42 + 44, j + 109);
          */
+        this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.WITHER_SKELETON_SKULL), i + 41 + 22, j + 109);
         this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GOLD_INGOT), i + 42 + 66, j + 109); // k changed to wither skull
         this.itemRenderer.zOffset = 0.0F;
     }
