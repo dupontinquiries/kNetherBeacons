@@ -279,49 +279,56 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
             int j = (7 + beaconLevel * 2) * 20;
             Box box = (new Box(pos)).expand(d).stretch(0.0D, (double)world.getHeight(), 0.0D);
 
-            // apply primary effect
-            /*
             if (primaryEffect != null) {
-                List<PlayerEntity> list = world.getNonSpectatingEntities(PlayerEntity.class, box);
-                Iterator var11 = list.iterator();
 
-                PlayerEntity playerEntity2;
-                while(var11.hasNext()) {
-                    playerEntity2 = (PlayerEntity)var11.next();
-                    playerEntity2.addStatusEffect(new StatusEffectInstance(primaryEffect, j, i, true, true));
-                }
-            }
-
-             */
-
-            if (secondaryEffect != null) {
-                System.out.println(" ddd secondary effect is NOT null! (" + secondaryEffect.getTranslationKey() + ")");
-                // find owner
-                // NetherBeaconEntity nbe = (NetherBeaconEntity) world.getBlockEntity(pos);
-
-                /*
-                String on = "none";
-                if (nbe.ownerName != null) { on = nbe.ownerName; }
-                //  && secondaryEffect.isBeneficial()
-                PlayerEntity owner = null;
-                if ( on != "none" ) {
-                    for (ServerPlayerEntity player : world.getServer().getPlayerManager().getPlayerList()) {
-                        if (player.getName().asString() == on) {
-                            owner = (PlayerEntity) player;
-                            System.out.println(" --- searching for player: " + on + "\n --- found: " + owner.getName().asString());
-                            //player.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, 0, true, true)); // apply owner effect everywhere
+                if (primaryEffect.isBeneficial()) { //secondaryEffect.isBeneficial()
+                    System.out.println(" (a) effect is beneficial");
+                    List<PlayerEntity> playerEntities = world.getNonSpectatingEntities(PlayerEntity.class, box);
+                    Iterator iter = playerEntities.iterator();
+                    PlayerEntity player;
+                    while(iter.hasNext()) {
+                        player = (PlayerEntity)iter.next();
+                        if ( player.getName().asString() == ownerName ) {
+                            System.out.println(" *** applied beacon effects to owner");
+                            player.addStatusEffect(new StatusEffectInstance(primaryEffect, j, i, true, true));
                             break;
                         }
                     }
+                } else {
+                    System.out.println(" (b) effect is not beneficial");
+                    List<LivingEntity> livingEntities = world.getNonSpectatingEntities(LivingEntity.class, box);
+                    Iterator iter = livingEntities.iterator();
+                    LivingEntity le;
+                    while(iter.hasNext()) {
+                        le = (LivingEntity)iter.next();
+                        if ( !(le instanceof PlayerEntity && ((PlayerEntity)le).getName().asString() == ownerName) ) {
+                            le.addStatusEffect(new StatusEffectInstance(primaryEffect, j, i, true, true));
+                        }
+                    }
+                    System.out.println(" *** applied beacon effects to other mobs");
                 }
 
-                 */
+                /*
+                System.out.println(" ddd primary effect is NOT null! (" + primaryEffect.getTranslationKey() + ")");
+                System.out.println(" zzz owner name is: " + ownerName);
+                List<PlayerEntity> playerEntities = world.getNonSpectatingEntities(PlayerEntity.class, box);
+                Iterator iter = playerEntities.iterator();
+                PlayerEntity player;
+                while(iter.hasNext()) {
+                    player = (PlayerEntity)iter.next();
+                    if ( player.getName().asString() == ownerName ) {
+                        System.out.println(" *** applied beacon effects to owner");
+                        player.addStatusEffect(new StatusEffectInstance(primaryEffect, j, 0, true, true));
+                        break;
+                    }
+                }
+                */
+            } else {
+                System.out.println(" ddd primary effect is null!");
+            }
 
-                // break if no owner
-                // if (owner == null) return;
-
-                // decide whether applied to enemy or owner
-                //String ownerName = world.getBlockState(pos, state.with(NetherBeaconBlock.ACTIVE, false));
+            if (secondaryEffect != null) {
+                System.out.println(" ddd secondary effect is NOT null! (" + secondaryEffect.getTranslationKey() + ")");
                 System.out.println(" zzz owner name is: " + ownerName);
                 if (secondaryEffect.isBeneficial()) { //secondaryEffect.isBeneficial()
                     System.out.println(" (a) effect is beneficial");
@@ -349,96 +356,6 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                     }
                     System.out.println(" *** applied beacon effects to other mobs");
                 }
-            }
-
-            //if (beaconLevel >= 2 && primaryEffect != secondaryEffect && secondaryEffect != null) {
-            if (secondaryEffect != null) {
-                System.out.println(" ddd secondary effect is NOT null! (" + secondaryEffect.getTranslationKey() + ")");
-                // find owner
-                // NetherBeaconEntity nbe = (NetherBeaconEntity) world.getBlockEntity(pos);
-
-                /*
-                String on = "none";
-                if (nbe.ownerName != null) { on = nbe.ownerName; }
-                //  && secondaryEffect.isBeneficial()
-                PlayerEntity owner = null;
-                if ( on != "none" ) {
-                    for (ServerPlayerEntity player : world.getServer().getPlayerManager().getPlayerList()) {
-                        if (player.getName().asString() == on) {
-                            owner = (PlayerEntity) player;
-                            System.out.println(" --- searching for player: " + on + "\n --- found: " + owner.getName().asString());
-                            //player.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, 0, true, true)); // apply owner effect everywhere
-                            break;
-                        }
-                    }
-                }
-
-                 */
-
-                // break if no owner
-                // if (owner == null) return;
-
-                // decide whether applied to enemy or owner
-                //String ownerName = world.getBlockState(pos, state.with(NetherBeaconBlock.ACTIVE, false));
-                System.out.println(" zzz owner name is: " + ownerName);
-                if (secondaryEffect.isBeneficial()) { //secondaryEffect.isBeneficial()
-                    System.out.println(" (a) effect is beneficial");
-                    List<PlayerEntity> playerEntities = world.getNonSpectatingEntities(PlayerEntity.class, box);
-                    Iterator iter = playerEntities.iterator();
-                    PlayerEntity player;
-                    while(iter.hasNext()) {
-                        player = (PlayerEntity)iter.next();
-                        if ( player.getName().asString() == ownerName ) {
-                            System.out.println(" *** applied beacon effects to owner");
-                            player.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, i, true, true));
-                            break;
-                        }
-                    }
-                } else {
-                    System.out.println(" (b) effect is not beneficial");
-                    List<LivingEntity> livingEntities = world.getNonSpectatingEntities(LivingEntity.class, box);
-                    Iterator iter = livingEntities.iterator();
-                    LivingEntity le;
-                    while(iter.hasNext()) {
-                        le = (LivingEntity)iter.next();
-                        if ( !(le instanceof PlayerEntity && ((PlayerEntity)le).getName().asString() == ownerName) ) {
-                            le.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, i, true, true));
-                        }
-                    }
-                    System.out.println(" *** applied beacon effects to other mobs");
-                }
-                /*
-                while(var22.hasNext()) {
-                    m = (LivingEntity)var22.next();
-                    if ( !(m instanceof PlayerEntity && ((PlayerEntity)m).getName().asString() == on) ) {
-                        m.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, 0, true, true));
-                    }
-                }
-                 */
-
-                /*
-                // against mobs
-                if (MOB_EFFECTS.contains(secondaryEffect)) {
-                    List<HostileEntity> list2 = world.getNonSpectatingEntities(HostileEntity.class, box);
-                    Iterator var22 = list2.iterator();
-                    HostileEntity m;
-                    while(var22.hasNext()) {
-                        m = (HostileEntity)var22.next();
-                        m.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, 0, true, true));
-                    }
-                }
-                // against players
-                if (PLAYER_EFFECTS.contains(secondaryEffect)) {
-                    List<PlayerEntity> list2 = world.getNonSpectatingEntities(PlayerEntity.class, box);
-                    Iterator var22 = list2.iterator();
-                    PlayerEntity p;
-                    while(var22.hasNext()) {
-                        p = (PlayerEntity)var22.next();
-                        int amp = 0;
-                        p.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, amp, true, true));
-                    }
-                }
-                 */
             } else {
                 System.out.println(" ddd secondary effect is null!");
             }
@@ -465,7 +382,8 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
     @Nullable
     static StatusEffect getPotionEffectById(int id) {
         StatusEffect statusEffect = StatusEffect.byRawId(id);
-        return EFFECTS.contains(statusEffect) ? statusEffect : null;
+        return statusEffect;
+        //return EFFECTS.contains(statusEffect) ? statusEffect : null;
     }
 
     public void readNbt(NbtCompound nbt) {
@@ -528,8 +446,8 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
         //EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.SPEED, StatusEffects.HASTE}, {StatusEffects.RESISTANCE, StatusEffects.JUMP_BOOST}, {StatusEffects.STRENGTH}, {StatusEffects.REGENERATION}};
         //EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.HERO_OF_THE_VILLAGE, StatusEffects.INSTANT_DAMAGE}, {StatusEffects.INVISIBILITY, StatusEffects.WITHER},
         //        {StatusEffects.LEVITATION}, {StatusEffects.FIRE_RESISTANCE}};
-        EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.GLOWING, StatusEffects.INVISIBILITY, StatusEffects.SLOWNESS, StatusEffects.MINING_FATIGUE}, {StatusEffects.WITHER, StatusEffects.LEVITATION, StatusEffects.SLOW_FALLING},
-                {StatusEffects.INSTANT_DAMAGE, StatusEffects.SATURATION, StatusEffects.WATER_BREATHING, EffectsKNB.guardianEffect}, {StatusEffects.FIRE_RESISTANCE}};
+        EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.GLOWING, StatusEffects.INVISIBILITY, StatusEffects.SLOWNESS, StatusEffects.MINING_FATIGUE}, {StatusEffects.WITHER, StatusEffects.LEVITATION, StatusEffects.SLOW_FALLING, StatusEffects.HUNGER},
+                {StatusEffects.INSTANT_HEALTH, StatusEffects.SATURATION, StatusEffects.WATER_BREATHING, EffectsKNB.guardianEffect}, {StatusEffects.FIRE_RESISTANCE}};
         // EFFECTS_BY_LEVEL = new StatusEffect[][]{{StatusEffects.SPEED, StatusEffects.HASTE}, {StatusEffects.RESISTANCE, StatusEffects.JUMP_BOOST}, {StatusEffects.STRENGTH}, {StatusEffects.REGENERATION}};
         // k swap out effects
         EFFECTS = (Set)Arrays.stream(EFFECTS_BY_LEVEL).flatMap(Arrays::stream).collect(Collectors.toSet());

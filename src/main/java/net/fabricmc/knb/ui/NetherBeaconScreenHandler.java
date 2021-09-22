@@ -39,8 +39,8 @@ public class NetherBeaconScreenHandler extends ScreenHandler {
         this.payment = new SimpleInventory(1) {
             //public boolean isValid(int slot, ItemStack stack) { return stack.isIn(ItemTags.BEACON_PAYMENT_ITEMS); }
             public boolean isValid(int slot, ItemStack stack) {
-                return true;
-                //return stack.getItem() == Items.GOLD_INGOT.asItem();
+                //return true;
+                return stack.getItem() == Items.GOLD_INGOT.asItem();
             }
 
             public int getMaxCountPerStack() {
@@ -148,20 +148,12 @@ public class NetherBeaconScreenHandler extends ScreenHandler {
         return StatusEffect.byRawId(this.propertyDelegate.get(2));
     }
 
-    /*
     public void setEffects(int primaryEffectId, int secondaryEffectId) {
         if (this.paymentSlot.hasStack()) {
             this.propertyDelegate.set(1, primaryEffectId);
             this.propertyDelegate.set(2, secondaryEffectId);
             this.paymentSlot.takeStack(1);
         }
-
-    }
-    */
-
-    public void setEffects(int primaryEffectId, int secondaryEffectId) {
-        this.propertyDelegate.set(1, primaryEffectId);
-        this.propertyDelegate.set(2, secondaryEffectId);
     }
 
     public boolean hasPayment() {
