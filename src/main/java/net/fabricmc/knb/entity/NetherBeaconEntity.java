@@ -294,6 +294,63 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
 
              */
 
+            if (secondaryEffect != null) {
+                System.out.println(" ddd secondary effect is NOT null! (" + secondaryEffect.getTranslationKey() + ")");
+                // find owner
+                // NetherBeaconEntity nbe = (NetherBeaconEntity) world.getBlockEntity(pos);
+
+                /*
+                String on = "none";
+                if (nbe.ownerName != null) { on = nbe.ownerName; }
+                //  && secondaryEffect.isBeneficial()
+                PlayerEntity owner = null;
+                if ( on != "none" ) {
+                    for (ServerPlayerEntity player : world.getServer().getPlayerManager().getPlayerList()) {
+                        if (player.getName().asString() == on) {
+                            owner = (PlayerEntity) player;
+                            System.out.println(" --- searching for player: " + on + "\n --- found: " + owner.getName().asString());
+                            //player.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, 0, true, true)); // apply owner effect everywhere
+                            break;
+                        }
+                    }
+                }
+
+                 */
+
+                // break if no owner
+                // if (owner == null) return;
+
+                // decide whether applied to enemy or owner
+                //String ownerName = world.getBlockState(pos, state.with(NetherBeaconBlock.ACTIVE, false));
+                System.out.println(" zzz owner name is: " + ownerName);
+                if (secondaryEffect.isBeneficial()) { //secondaryEffect.isBeneficial()
+                    System.out.println(" (a) effect is beneficial");
+                    List<PlayerEntity> playerEntities = world.getNonSpectatingEntities(PlayerEntity.class, box);
+                    Iterator iter = playerEntities.iterator();
+                    PlayerEntity player;
+                    while(iter.hasNext()) {
+                        player = (PlayerEntity)iter.next();
+                        if ( player.getName().asString() == ownerName ) {
+                            System.out.println(" *** applied beacon effects to owner");
+                            player.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, i, true, true));
+                            break;
+                        }
+                    }
+                } else {
+                    System.out.println(" (b) effect is not beneficial");
+                    List<LivingEntity> livingEntities = world.getNonSpectatingEntities(LivingEntity.class, box);
+                    Iterator iter = livingEntities.iterator();
+                    LivingEntity le;
+                    while(iter.hasNext()) {
+                        le = (LivingEntity)iter.next();
+                        if ( !(le instanceof PlayerEntity && ((PlayerEntity)le).getName().asString() == ownerName) ) {
+                            le.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, i, true, true));
+                        }
+                    }
+                    System.out.println(" *** applied beacon effects to other mobs");
+                }
+            }
+
             //if (beaconLevel >= 2 && primaryEffect != secondaryEffect && secondaryEffect != null) {
             if (secondaryEffect != null) {
                 System.out.println(" ddd secondary effect is NOT null! (" + secondaryEffect.getTranslationKey() + ")");
@@ -333,7 +390,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                         player = (PlayerEntity)iter.next();
                         if ( player.getName().asString() == ownerName ) {
                             System.out.println(" *** applied beacon effects to owner");
-                            player.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, 0, true, true));
+                            player.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, i, true, true));
                             break;
                         }
                     }
@@ -345,7 +402,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                     while(iter.hasNext()) {
                         le = (LivingEntity)iter.next();
                         if ( !(le instanceof PlayerEntity && ((PlayerEntity)le).getName().asString() == ownerName) ) {
-                            le.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, 0, true, true));
+                            le.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, i, true, true));
                         }
                     }
                     System.out.println(" *** applied beacon effects to other mobs");
