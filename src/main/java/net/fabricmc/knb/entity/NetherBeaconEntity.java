@@ -9,6 +9,7 @@ import net.fabricmc.knb.KNB;
 import net.fabricmc.knb.blocks.NetherBeaconBlock;
 import net.fabricmc.knb.effects.EffectsKNB;
 import net.fabricmc.knb.ui.NetherBeaconScreenHandler;
+import net.minecraft.advancement.AdvancementManager;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -17,12 +18,14 @@ import net.minecraft.block.Stainable;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.inventory.ContainerLock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -42,6 +45,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.minecraft.world.Heightmap.Type;
+import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandlerFactory {
@@ -171,6 +175,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
             if (blockEntity.level > 0 && !blockEntity.beamSegments.isEmpty()) {
                 //System.out.println("applyingEffects");
                 applyPlayerEffects(world, pos, blockEntity.level, blockEntity.primary, blockEntity.secondary, blockEntity.ownerName);
+                applyTridentExplosions(world, pos, blockEntity.level, blockEntity.ownerName);
                 playSound(world, pos, SoundEvents.BLOCK_BEACON_AMBIENT);
             }
         }
@@ -198,6 +203,27 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                 }
             }
         }
+
+    }
+
+    private static void applyTridentExplosions(World world, BlockPos pos, int beaconLevel, String ownerName) {
+        double d = (double)(beaconLevel * 10 + 15);
+        Box box = (new Box(pos)).expand(1D).stretch(0.0D, (double)world.getHeight(), 0.0D);
+        List<TridentEntity> tridents = world.getNonSpectatingEntities(TridentEntity.class, box);
+        Iterator iter = tridents.iterator();
+        TridentEntity t;
+        while(iter.hasNext()) {
+            t = (TridentEntity)iter.next();
+            if (t.fallDistance == 0) {
+                world.createExplosion(t, t.getX(), t.getY(), t.getZ(), (float) (30 + (beaconLevel * 20)), Explosion.DestructionType.DESTROY);
+                t.remove(Entity.RemovalReason.KILLED);
+                if (t.getOwner() instanceof PlayerEntity ) {
+                    PlayerEntity p = (PlayerEntity) t.getOwner();
+                    //AdvancementManager.Listener.
+                }
+            }
+        }
+
 
     }
 
