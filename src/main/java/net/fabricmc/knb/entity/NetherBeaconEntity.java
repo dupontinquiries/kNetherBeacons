@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Stainable;
+import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.LivingEntity;
@@ -75,9 +76,11 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                     case 0:
                         return NetherBeaconEntity.this.level;
                     case 1:
+//                        return EFFECT_MAP.indexOf(NetherBeaconEntity.this.primary);
                         return StatusEffect.getRawId(NetherBeaconEntity.this.primary);
                         //return StatusEffect.getRawId(NetherBeaconEntity.this.primary);
                     case 2:
+//                        return EFFECT_MAP.indexOf(NetherBeaconEntity.this.secondary);
                         return StatusEffect.getRawId(NetherBeaconEntity.this.secondary);
                         //return StatusEffect.getRawId(NetherBeaconEntity.this.secondary);
                     default:
@@ -95,10 +98,12 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                             net.minecraft.block.entity.BeaconBlockEntity.playSound(NetherBeaconEntity.this.world, NetherBeaconEntity.this.pos, SoundEvents.BLOCK_BEACON_POWER_SELECT);
                         }
 
-                        NetherBeaconEntity.this.primary = NetherBeaconEntity.getPotionEffectById(value);
+                        NetherBeaconEntity.this.primary = EFFECT_MAP.get(value);
+//                        NetherBeaconEntity.this.primary = NetherBeaconEntity.getPotionEffectById(value);
                         break;
                     case 2:
-                        NetherBeaconEntity.this.secondary = NetherBeaconEntity.getPotionEffectById(value);
+                        NetherBeaconEntity.this.secondary = EFFECT_MAP.get(value);
+//                        NetherBeaconEntity.this.secondary = NetherBeaconEntity.getPotionEffectById(value);
                 }
 
             }
@@ -238,6 +243,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
 
     private static HashSet<StatusEffect> MOB_EFFECTS = new HashSet<StatusEffect>();
     private static HashSet<StatusEffect> PLAYER_EFFECTS = new HashSet<StatusEffect>();
+    public static Vector<StatusEffect> EFFECT_MAP = new Vector<>(15);
     private static HashSet<StatusEffect> BENEFICIAL_EFFECTS = new HashSet<StatusEffect>();
     static {
         MOB_EFFECTS.add(StatusEffects.GLOWING);
@@ -255,7 +261,22 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
         PLAYER_EFFECTS.add(StatusEffects.INSTANT_HEALTH);
         PLAYER_EFFECTS.add(StatusEffects.HERO_OF_THE_VILLAGE);
         PLAYER_EFFECTS.add(EffectsKNB.guardianEffect);
-        PLAYER_EFFECTS.add(EffectsKNB.guardianEffect);
+
+        EFFECT_MAP.add(StatusEffects.GLOWING);
+        EFFECT_MAP.add(StatusEffects.INSTANT_DAMAGE);
+        EFFECT_MAP.add(StatusEffects.LEVITATION);
+        EFFECT_MAP.add(StatusEffects.SLOW_FALLING);
+        EFFECT_MAP.add(StatusEffects.INVISIBILITY);
+        EFFECT_MAP.add(StatusEffects.WITHER);
+        EFFECT_MAP.add(StatusEffects.SLOWNESS);
+        EFFECT_MAP.add(StatusEffects.LEVITATION);
+        EFFECT_MAP.add(StatusEffects.SLOW_FALLING);
+        EFFECT_MAP.add(StatusEffects.FIRE_RESISTANCE);
+        EFFECT_MAP.add(StatusEffects.SATURATION);
+        EFFECT_MAP.add(StatusEffects.WATER_BREATHING);
+        EFFECT_MAP.add(StatusEffects.INSTANT_HEALTH);
+        EFFECT_MAP.add(StatusEffects.HERO_OF_THE_VILLAGE);
+        EFFECT_MAP.add(EffectsKNB.guardianEffect);
     }
 
     /*
@@ -289,7 +310,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                     while(iter.hasNext()) {
                         player = (PlayerEntity)iter.next();
                         if ( player.getName().asString() == ownerName ) {
-                            System.out.println(" *** applied beacon effects to owner");
+                            System.out.println(" *** applied beacon effects to owner: " + ownerName);
                             player.addStatusEffect(new StatusEffectInstance(primaryEffect, j, i, true, true));
                             break;
                         }
@@ -388,36 +409,48 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
 
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        this.primary = getPotionEffectById(nbt.getInt("Primary"));
-        this.secondary = getPotionEffectById(nbt.getInt("Secondary"));
+//        this.primary = getPotionEffectById(nbt.getInt("ePrimary"));
+//        this.secondary = getPotionEffectById(nbt.getInt("eSecondary"));
+        // get effects
+        int pKey = nbt.getInt("ePrimary"), sKey = nbt.getInt("eSecondary");
+        this.primary = EFFECT_MAP.get(pKey);
+        this.secondary = EFFECT_MAP.get(sKey);
+        // get level
+        this.level = nbt.getInt("Levels");
+        // get custom name
         if (nbt.contains("CustomName", 8)) {
             this.customName = Serializer.fromJson(nbt.getString("CustomName"));
         }
+        // get owner
         if (nbt.contains("kOwnerName", 8)) {
             this.ownerName = nbt.getString("kOwnerName");
-            System.out.println("ownerName from nbt: " + this.ownerName);
         } else {
             this.ownerName = "none";
         }
-
+        System.out.println("ownerName from nbt: " + this.ownerName);
         this.lock = ContainerLock.fromNbt(nbt);
     }
 
     public NbtCompound writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
+//        nbt.putInt("ePrimary", EFFECT_MAP.indexOf(primary));
+//        nbt.putInt("eSecondary", EFFECT_MAP.indexOf(secondary));
+        // save effects
         nbt.putInt("Primary", StatusEffect.getRawId(this.primary));
         nbt.putInt("Secondary", StatusEffect.getRawId(this.secondary));
+        nbt.putInt("ePrimary", EFFECT_MAP.indexOf(primary));
+        nbt.putInt("eSecondary", EFFECT_MAP.indexOf(secondary));
+        // save level
         nbt.putInt("Levels", this.level);
         if (this.customName != null) {
             nbt.putString("CustomName", Serializer.toJson(this.customName));
         }
-
+        // store owner name
         if (this.ownerName != null) {
             nbt.putString("kOwnerName", this.ownerName);
         } else {
             nbt.putString("kOwnerName", "none");
         }
-
         this.lock.writeNbt(nbt);
         return nbt;
     }

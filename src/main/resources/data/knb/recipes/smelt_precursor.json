@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "result": "knb:nether_beacon_precursor",
+  "experience": 250.00,
+  "cookingtime": 300
+}

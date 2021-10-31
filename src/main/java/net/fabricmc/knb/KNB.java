@@ -7,9 +7,11 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.knb.blocks.BlocksKNB;
 import net.fabricmc.knb.blocks.blockitems.BlockItemsKNB;
+import net.fabricmc.knb.effects.EffectsKNB;
 import net.fabricmc.knb.entity.NetherBeaconEntity;
 import net.fabricmc.knb.ui.NetherBeaconScreenHandler;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -26,6 +28,7 @@ public class KNB implements ModInitializer {
 	public static BlockEntityType<NetherBeaconEntity> netherBeaconEntityType;
 	public static final ScreenHandlerType<NetherBeaconScreenHandler> beaconScreen;
 	public static final Identifier netherBeaconIdentifier = new Identifier(modName, "nether_beacon");
+	public static final Identifier precursorIdentifier = new Identifier(modName, "nether_beacon_precursor");
 	//public static final ScreenHandlerType<NetherBeaconScreenHandler> netherBeaconScreen;
 
 	// music discs
@@ -34,6 +37,9 @@ public class KNB implements ModInitializer {
 	public static final SoundEvent altitudeMusicEvent = new SoundEvent(altitudeIdentifier);
 	//public static final Identifier jamiesname_shulk_ID = id("jamiesname_shulk");
 	//public static final SoundEvent jamiesname_shulkEvent = new SoundEvent(jamiesname_shulk_ID);
+
+	public static StatusEffect guardianEffect;
+	public static Identifier guardianEffectIdentifier = new Identifier(KNB.modName, "guardian_effect");
 
 	static {
 		// UI
@@ -60,6 +66,9 @@ public class KNB implements ModInitializer {
 
 		// entities
 		//EntitiesKNB.registerBlockEntities(modName);
+
+		// status effect icons
+		EffectsKNB.reg();
 
 		// packets
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier(modName, "c2s-acknowledge"), (server, player, handler, buf, responseSender) -> {

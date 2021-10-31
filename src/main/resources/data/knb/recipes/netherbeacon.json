@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ggg",
+    "gxg",
+    "mmm"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:glass"
+    },
+    "x": {
+      "item": "knb:nether_beacon_precursor"
+    },
+    "m": {
+      "item": "minecraft:magma_block"
+    }
+  },
+  "result": {
+    "item": "knb:nether_beacon",
+    "count": 1
+  }
+}
