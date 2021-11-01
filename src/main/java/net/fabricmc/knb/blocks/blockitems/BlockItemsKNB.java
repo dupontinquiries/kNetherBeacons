@@ -21,6 +21,9 @@ public class BlockItemsKNB {
         Registry.register(Registry.ITEM, KNB.netherBeaconIdentifier,
                 new BlockItem(BlocksKNB.netherBeaconBlock, BUILDING_BLOCKS));
 
+        Registry.register(Registry.ITEM, KNB.villagerBeaconIdentifier,
+                new BlockItem(BlocksKNB.villagerBeaconBlock, BUILDING_BLOCKS));
+
         // precursor
         Registry.register(Registry.ITEM, KNB.precursorIdentifier,
                 new Item(new Item.Settings().group(ItemGroup.MATERIALS).fireproof().maxCount(1).rarity(Rarity.EPIC)));

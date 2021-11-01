@@ -9,6 +9,7 @@ import net.fabricmc.knb.blocks.BlocksKNB;
 import net.fabricmc.knb.blocks.blockitems.BlockItemsKNB;
 import net.fabricmc.knb.effects.EffectsKNB;
 import net.fabricmc.knb.entity.NetherBeaconEntity;
+import net.fabricmc.knb.entity.VillagerBeaconEntity;
 import net.fabricmc.knb.ui.NetherBeaconScreenHandler;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.effect.StatusEffect;
@@ -31,6 +32,10 @@ public class KNB implements ModInitializer {
 	public static final Identifier precursorIdentifier = new Identifier(modName, "nether_beacon_precursor");
 	//public static final ScreenHandlerType<NetherBeaconScreenHandler> netherBeaconScreen;
 
+	// villager beacon
+	public static BlockEntityType<VillagerBeaconEntity> villagerBeaconEntityType;
+	public static final Identifier villagerBeaconIdentifier = new Identifier(modName, "villager_beacon");
+
 	// music discs
 	//public static Vector<String> musicDiscs = new Vector<String>();
 	public static final Identifier altitudeIdentifier = new Identifier(modName, "altitude");
@@ -41,12 +46,13 @@ public class KNB implements ModInitializer {
 	public static StatusEffect guardianEffect;
 	public static Identifier guardianEffectIdentifier = new Identifier(KNB.modName, "guardian_effect");
 
-	static {
+    static {
 		// UI
 		beaconScreen = ScreenHandlerRegistry.registerSimple(netherBeaconIdentifier, NetherBeaconScreenHandler::new);
 		// entity
 		//netherBeaconEntityType = Registry.register(Registry.BLOCK_ENTITY_TYPE, netherBeaconIdentifier, FabricBlockEntityTypeBuilder.create(NetherBeaconEntity::new, BlocksKNB.NETHER_BEACON).build());
 		netherBeaconEntityType = Registry.register(Registry.BLOCK_ENTITY_TYPE, netherBeaconIdentifier, FabricBlockEntityTypeBuilder.create(NetherBeaconEntity::new, BlocksKNB.netherBeaconBlock).build());
+		villagerBeaconEntityType = Registry.register(Registry.BLOCK_ENTITY_TYPE, villagerBeaconIdentifier, FabricBlockEntityTypeBuilder.create(VillagerBeaconEntity::new, BlocksKNB.villagerBeaconBlock).build());
 
 		// music discs
 		Registry.register(Registry.SOUND_EVENT, altitudeIdentifier, altitudeMusicEvent);
