@@ -32,5 +32,8 @@ public class BlockItemsKNB {
         Registry.register(Registry.ITEM, KNB.altitudeIdentifier,
                 new MusicDiskKNB(KNB.altitudeMusicEvent));
 
+        Registry.register(Registry.ITEM, KNB.farlandsIdentifier,
+                new MusicDiskKNB(KNB.farlandsMusicEvent));
+
     }
 }

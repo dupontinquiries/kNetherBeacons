@@ -40,6 +40,9 @@ public class KNB implements ModInitializer {
 	//public static Vector<String> musicDiscs = new Vector<String>();
 	public static final Identifier altitudeIdentifier = new Identifier(modName, "altitude");
 	public static final SoundEvent altitudeMusicEvent = new SoundEvent(altitudeIdentifier);
+
+	public static final Identifier farlandsIdentifier = new Identifier(modName, "farlands");
+	public static final SoundEvent farlandsMusicEvent = new SoundEvent(farlandsIdentifier);
 	//public static final Identifier jamiesname_shulk_ID = id("jamiesname_shulk");
 	//public static final SoundEvent jamiesname_shulkEvent = new SoundEvent(jamiesname_shulk_ID);
 
@@ -56,6 +59,7 @@ public class KNB implements ModInitializer {
 
 		// music discs
 		Registry.register(Registry.SOUND_EVENT, altitudeIdentifier, altitudeMusicEvent);
+		Registry.register(Registry.SOUND_EVENT, farlandsIdentifier, farlandsMusicEvent);
 		//musicDiscs.add("altitude");
 	}
 

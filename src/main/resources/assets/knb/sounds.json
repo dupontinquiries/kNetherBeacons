@@ -1,12 +1,22 @@
 {
   "altitude": {
     "category": "master",
-    "subtitle": "Altitude",
+    "subtitle": "The Kitchen - Altitude",
     "sounds": [
       {
         "name": "knb:altitude",
         "stream": false
       }
     ]
-  }
+  },
+  "farlands": {
+  "category": "master",
+  "subtitle": "The Kitchen - Farlands",
+  "sounds": [
+    {
+      "name": "knb:farlands",
+      "stream": false
+    }
+  ]
+}
 }

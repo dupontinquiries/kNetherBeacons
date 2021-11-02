@@ -7,5 +7,7 @@
   "effect.knb.guardian_effect": "Guardian",
   "item.knb.altitude": "Music Disc",
   "item.knb.altitude.desc": "The Kitchen - Altitude",
+  "item.knb.farlands": "Music Disc",
+  "item.knb.farlands.desc": "The Kitchen - Farlands",
   "containr.nether_beacon": "Nether Beacon"
 }
