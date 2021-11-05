@@ -99,7 +99,7 @@ public class VillagerBeaconEntity extends BlockEntity {
             Random r = new Random();
             blockEntity.primary = VILLAGER_EFFECTS.get(r.nextInt(VILLAGER_EFFECTS.size()));
         }
-        if (world.getTime() % 240L == 0L) {
+        if (world.getTime() % 100L == 0L) {
 //            if (world.getTime() % 80L == 0L) {
             world.setBlockState(pos, state.with(NetherBeaconBlock.ACTIVE, true));
             applyPlayerEffects(world, pos, blockEntity.level, blockEntity.primary);
@@ -247,6 +247,7 @@ public class VillagerBeaconEntity extends BlockEntity {
         VILLAGER_EFFECTS.add(StatusEffects.SPEED);
         VILLAGER_EFFECTS.add(StatusEffects.DOLPHINS_GRACE);
         VILLAGER_EFFECTS.add(StatusEffects.JUMP_BOOST);
+        VILLAGER_EFFECTS.add(StatusEffects.RESISTANCE);
 //        VILLAGER_EFFECTS.add(EffectsKNB.agressionEffect);
     }
 
@@ -261,7 +262,7 @@ public class VillagerBeaconEntity extends BlockEntity {
 
     private static void applyPlayerEffects(World world, BlockPos pos, int beaconLevel, @Nullable StatusEffect primaryEffect) {
         if (!world.isClient) {
-            double d = (double)(beaconLevel * 10 + 15);
+            double d = (double)(beaconLevel * 10 + 25);
             int i = 0;
             if (beaconLevel >= 4) {
                 i = 1;
