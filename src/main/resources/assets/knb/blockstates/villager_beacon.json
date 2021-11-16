@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "active=false": { "model": "knb:block/villager_beacon_deactivated" },
+    "active=true": { "model": "knb:block/villager_beacon" }
+  }
+}

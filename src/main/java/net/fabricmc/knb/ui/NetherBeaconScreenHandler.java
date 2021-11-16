@@ -3,6 +3,7 @@ package net.fabricmc.knb.ui;
 import net.fabricmc.knb.KNB;
 import net.fabricmc.knb.blocks.BlocksKNB;
 import net.fabricmc.knb.blocks.blockitems.BlockItemsKNB;
+import net.fabricmc.knb.entity.NetherBeaconEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
@@ -139,6 +140,7 @@ public class NetherBeaconScreenHandler extends ScreenHandler {
 
     @Nullable
     public StatusEffect getPrimaryEffect() {
+//        return NetherBeaconEntity.EFFECT_MAP.get(this.propertyDelegate.get(1));
         return StatusEffect.byRawId(this.propertyDelegate.get(1));
         // k make return null
     }

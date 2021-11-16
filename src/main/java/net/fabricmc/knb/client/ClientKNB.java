@@ -4,6 +4,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.knb.KNB;
 import net.fabricmc.knb.render.NetherBeaconEntityRenderer;
+import net.fabricmc.knb.render.VillagerBeaconEntityRenderer;
 import net.fabricmc.knb.ui.NetherBeaconScreen;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 
@@ -22,6 +23,7 @@ public class ClientKNB implements ClientModInitializer {
         //BlockEntityRendererRegistry.INSTANCE.register(EntitiesKNB.netherBeaconEntity, NetherBeaconEntity::new);
 
         BlockEntityRendererRegistry.INSTANCE.register(KNB.netherBeaconEntityType, NetherBeaconEntityRenderer::new);
+        BlockEntityRendererRegistry.INSTANCE.register(KNB.villagerBeaconEntityType, VillagerBeaconEntityRenderer::new);
 
         //ScreenRegistry.register(ScreenHandlerTypeKNB.netherBeaconScreen, NetherBeaconScreen::new);
 

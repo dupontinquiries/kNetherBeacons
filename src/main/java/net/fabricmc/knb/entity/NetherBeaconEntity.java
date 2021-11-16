@@ -9,19 +9,23 @@ import net.fabricmc.knb.KNB;
 import net.fabricmc.knb.blocks.NetherBeaconBlock;
 import net.fabricmc.knb.effects.EffectsKNB;
 import net.fabricmc.knb.ui.NetherBeaconScreenHandler;
+import net.minecraft.advancement.AdvancementManager;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Stainable;
+import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.inventory.ContainerLock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -41,6 +45,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.minecraft.world.Heightmap.Type;
+import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandlerFactory {
@@ -75,9 +80,11 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                     case 0:
                         return NetherBeaconEntity.this.level;
                     case 1:
+//                        return EFFECT_MAP.indexOf(NetherBeaconEntity.this.primary);
                         return StatusEffect.getRawId(NetherBeaconEntity.this.primary);
                         //return StatusEffect.getRawId(NetherBeaconEntity.this.primary);
                     case 2:
+//                        return EFFECT_MAP.indexOf(NetherBeaconEntity.this.secondary);
                         return StatusEffect.getRawId(NetherBeaconEntity.this.secondary);
                         //return StatusEffect.getRawId(NetherBeaconEntity.this.secondary);
                     default:
@@ -95,9 +102,11 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                             net.minecraft.block.entity.BeaconBlockEntity.playSound(NetherBeaconEntity.this.world, NetherBeaconEntity.this.pos, SoundEvents.BLOCK_BEACON_POWER_SELECT);
                         }
 
+//                        NetherBeaconEntity.this.primary = EFFECT_MAP.get(value);
                         NetherBeaconEntity.this.primary = NetherBeaconEntity.getPotionEffectById(value);
                         break;
                     case 2:
+//                        NetherBeaconEntity.this.secondary = EFFECT_MAP.get(value);
                         NetherBeaconEntity.this.secondary = NetherBeaconEntity.getPotionEffectById(value);
                 }
 
@@ -166,6 +175,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
             if (blockEntity.level > 0 && !blockEntity.beamSegments.isEmpty()) {
                 //System.out.println("applyingEffects");
                 applyPlayerEffects(world, pos, blockEntity.level, blockEntity.primary, blockEntity.secondary, blockEntity.ownerName);
+                applyTridentExplosions(world, pos, blockEntity.level, blockEntity.ownerName);
                 playSound(world, pos, SoundEvents.BLOCK_BEACON_AMBIENT);
             }
         }
@@ -193,6 +203,27 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                 }
             }
         }
+
+    }
+
+    private static void applyTridentExplosions(World world, BlockPos pos, int beaconLevel, String ownerName) {
+        double d = (double)(beaconLevel * 10 + 15);
+        Box box = (new Box(pos)).expand(1D).stretch(0.0D, (double)world.getHeight(), 0.0D);
+        List<TridentEntity> tridents = world.getNonSpectatingEntities(TridentEntity.class, box);
+        Iterator iter = tridents.iterator();
+        TridentEntity t;
+        while(iter.hasNext()) {
+            t = (TridentEntity)iter.next();
+            if (t.fallDistance == 0) {
+                world.createExplosion(t, t.getX(), t.getY(), t.getZ(), (float) (30 + (beaconLevel * 20)), Explosion.DestructionType.DESTROY);
+                t.remove(Entity.RemovalReason.KILLED);
+                if (t.getOwner() instanceof PlayerEntity ) {
+                    PlayerEntity p = (PlayerEntity) t.getOwner();
+                    //AdvancementManager.Listener.
+                }
+            }
+        }
+
 
     }
 
@@ -238,6 +269,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
 
     private static HashSet<StatusEffect> MOB_EFFECTS = new HashSet<StatusEffect>();
     private static HashSet<StatusEffect> PLAYER_EFFECTS = new HashSet<StatusEffect>();
+    public static Vector<StatusEffect> EFFECT_MAP = new Vector<>(15);
     private static HashSet<StatusEffect> BENEFICIAL_EFFECTS = new HashSet<StatusEffect>();
     static {
         MOB_EFFECTS.add(StatusEffects.GLOWING);
@@ -255,7 +287,22 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
         PLAYER_EFFECTS.add(StatusEffects.INSTANT_HEALTH);
         PLAYER_EFFECTS.add(StatusEffects.HERO_OF_THE_VILLAGE);
         PLAYER_EFFECTS.add(EffectsKNB.guardianEffect);
-        PLAYER_EFFECTS.add(EffectsKNB.guardianEffect);
+
+        EFFECT_MAP.add(StatusEffects.GLOWING);
+        EFFECT_MAP.add(StatusEffects.INSTANT_DAMAGE);
+        EFFECT_MAP.add(StatusEffects.LEVITATION);
+        EFFECT_MAP.add(StatusEffects.SLOW_FALLING);
+        EFFECT_MAP.add(StatusEffects.INVISIBILITY);
+        EFFECT_MAP.add(StatusEffects.WITHER);
+        EFFECT_MAP.add(StatusEffects.SLOWNESS);
+        EFFECT_MAP.add(StatusEffects.LEVITATION);
+        EFFECT_MAP.add(StatusEffects.SLOW_FALLING);
+        EFFECT_MAP.add(StatusEffects.FIRE_RESISTANCE);
+        EFFECT_MAP.add(StatusEffects.SATURATION);
+        EFFECT_MAP.add(StatusEffects.WATER_BREATHING);
+        EFFECT_MAP.add(StatusEffects.INSTANT_HEALTH);
+        EFFECT_MAP.add(StatusEffects.HERO_OF_THE_VILLAGE);
+        EFFECT_MAP.add(EffectsKNB.guardianEffect);
     }
 
     /*
@@ -269,9 +316,11 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
 
     private static void applyPlayerEffects(World world, BlockPos pos, int beaconLevel, @Nullable StatusEffect primaryEffect, @Nullable StatusEffect secondaryEffect, String ownerName) {
         if (!world.isClient) {
-            System.out.println(" * applying beacon effects");
             double d = (double)(beaconLevel * 10 + 15);
             int i = 0;
+            if (primaryEffect == secondaryEffect) {
+                System.out.println("primary = secondary");
+            }
             if (beaconLevel >= 4 && primaryEffect == secondaryEffect) {
                 i = 1;
             }
@@ -282,20 +331,18 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
             if (primaryEffect != null) {
 
                 if (primaryEffect.isBeneficial()) { //secondaryEffect.isBeneficial()
-                    System.out.println(" (a) effect is beneficial");
                     List<PlayerEntity> playerEntities = world.getNonSpectatingEntities(PlayerEntity.class, box);
                     Iterator iter = playerEntities.iterator();
                     PlayerEntity player;
                     while(iter.hasNext()) {
                         player = (PlayerEntity)iter.next();
                         if ( player.getName().asString() == ownerName ) {
-                            System.out.println(" *** applied beacon effects to owner");
+                            System.out.println("applied beacon p-effect [" + primaryEffect.getTranslationKey() + "] to owner: " + ownerName);
                             player.addStatusEffect(new StatusEffectInstance(primaryEffect, j, i, true, true));
                             break;
                         }
                     }
                 } else {
-                    System.out.println(" (b) effect is not beneficial");
                     List<LivingEntity> livingEntities = world.getNonSpectatingEntities(LivingEntity.class, box);
                     Iterator iter = livingEntities.iterator();
                     LivingEntity le;
@@ -305,46 +352,28 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                             le.addStatusEffect(new StatusEffectInstance(primaryEffect, j, i, true, true));
                         }
                     }
-                    System.out.println(" *** applied beacon effects to other mobs");
+                    System.out.println("applied beacon p-effect [" + primaryEffect.getTranslationKey() + "] to other mobs");
                 }
-
-                /*
-                System.out.println(" ddd primary effect is NOT null! (" + primaryEffect.getTranslationKey() + ")");
-                System.out.println(" zzz owner name is: " + ownerName);
-                List<PlayerEntity> playerEntities = world.getNonSpectatingEntities(PlayerEntity.class, box);
-                Iterator iter = playerEntities.iterator();
-                PlayerEntity player;
-                while(iter.hasNext()) {
-                    player = (PlayerEntity)iter.next();
-                    if ( player.getName().asString() == ownerName ) {
-                        System.out.println(" *** applied beacon effects to owner");
-                        player.addStatusEffect(new StatusEffectInstance(primaryEffect, j, 0, true, true));
-                        break;
-                    }
-                }
-                */
             } else {
-                System.out.println(" ddd primary effect is null!");
+                System.out.println("primary effect is null!");
             }
 
             if (secondaryEffect != null) {
-                System.out.println(" ddd secondary effect is NOT null! (" + secondaryEffect.getTranslationKey() + ")");
-                System.out.println(" zzz owner name is: " + ownerName);
-                if (secondaryEffect.isBeneficial()) { //secondaryEffect.isBeneficial()
-                    System.out.println(" (a) effect is beneficial");
+                if (secondaryEffect.isBeneficial()) {
+                    System.out.println(" (a) s-effect is beneficial");
                     List<PlayerEntity> playerEntities = world.getNonSpectatingEntities(PlayerEntity.class, box);
                     Iterator iter = playerEntities.iterator();
                     PlayerEntity player;
                     while(iter.hasNext()) {
                         player = (PlayerEntity)iter.next();
+                        System.out.println("checking player: " + player.getName().asString());
                         if ( player.getName().asString() == ownerName ) {
-                            System.out.println(" *** applied beacon effects to owner");
+                            System.out.println("applied beacon p-effect [" + secondaryEffect.getTranslationKey() + "] to owner: " + ownerName);
                             player.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, i, true, true));
                             break;
                         }
                     }
                 } else {
-                    System.out.println(" (b) effect is not beneficial");
                     List<LivingEntity> livingEntities = world.getNonSpectatingEntities(LivingEntity.class, box);
                     Iterator iter = livingEntities.iterator();
                     LivingEntity le;
@@ -354,10 +383,10 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
                             le.addStatusEffect(new StatusEffectInstance(secondaryEffect, j, i, true, true));
                         }
                     }
-                    System.out.println(" *** applied beacon effects to other mobs");
+                    System.out.println("applied beacon s-effect [" + secondaryEffect.getTranslationKey() + "] to other mobs");
                 }
             } else {
-                System.out.println(" ddd secondary effect is null!");
+                System.out.println("secondary effect is null!");
             }
         }
     }
@@ -388,36 +417,45 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
 
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
+        // get effects
         this.primary = getPotionEffectById(nbt.getInt("Primary"));
         this.secondary = getPotionEffectById(nbt.getInt("Secondary"));
-        if (nbt.contains("CustomName", 8)) {
-            this.customName = Serializer.fromJson(nbt.getString("CustomName"));
-        }
+        // get level
+        this.level = nbt.getInt("Levels");
+        // get owner
         if (nbt.contains("kOwnerName", 8)) {
             this.ownerName = nbt.getString("kOwnerName");
-            System.out.println("ownerName from nbt: " + this.ownerName);
         } else {
             this.ownerName = "none";
         }
-
+        System.out.println("ownerName from nbt: " + this.ownerName);
+        // get custom name
+        if (nbt.contains("CustomName", 8)) {
+            this.customName = Serializer.fromJson(nbt.getString("CustomName"));
+//            this.ownerName = Serializer.fromJson(nbt.getString("CustomName")).asString();
+//            System.out.println("Custom name is player name: " + this.ownerName);
+        }
         this.lock = ContainerLock.fromNbt(nbt);
     }
 
     public NbtCompound writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
+        // save effects
         nbt.putInt("Primary", StatusEffect.getRawId(this.primary));
         nbt.putInt("Secondary", StatusEffect.getRawId(this.secondary));
+        // add strength and then sub for guardian workaround? - need code here and in apply effects code and also on screen
+        // save level
         nbt.putInt("Levels", this.level);
-        if (this.customName != null) {
-            nbt.putString("CustomName", Serializer.toJson(this.customName));
-        }
-
+        // store owner name
         if (this.ownerName != null) {
             nbt.putString("kOwnerName", this.ownerName);
         } else {
             nbt.putString("kOwnerName", "none");
         }
-
+        // store custom name
+        if (this.customName != null) {
+            nbt.putString("CustomName", Serializer.toJson(this.customName));
+        }
         this.lock.writeNbt(nbt);
         return nbt;
     }
@@ -434,7 +472,7 @@ public class NetherBeaconEntity extends BlockEntity implements NamedScreenHandle
     }
 
     public Text getDisplayName() {
-        return (Text)(this.customName != null ? this.customName : new TranslatableText("container.beacon"));
+        return (Text)(this.customName != null ? this.customName : new TranslatableText("container.nether_beacon"));
     }
 
     public void setWorld(World world) {

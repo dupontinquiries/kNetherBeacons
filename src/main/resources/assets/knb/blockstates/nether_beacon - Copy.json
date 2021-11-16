@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "active=false": { "model": "knb:block/nether_beacon_deactivated" },
+    "active=true": { "model": "knb:block/nether_beacon" }
+  }
+}

@@ -35,7 +35,7 @@ public class EffectsKNB {
      */
 
     public static StatusEffect guardianEffect;
-    public static Identifier guardianEffectIdentifier = new Identifier(KNB.modName, "guardian");
+    public static Identifier guardianEffectIdentifier = new Identifier(KNB.modName, "guardian_effect");
 
     static {
         /*
@@ -53,10 +53,7 @@ public class EffectsKNB {
                 //.addAttributeModifier(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, "55FCED67-E92A-486E-9800-B47F202C4386", -.8, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));\
          */
 
-        guardianEffect = Registry.register(Registry.STATUS_EFFECT, guardianEffectIdentifier, (new BaseEffect(StatusEffectType.BENEFICIAL, 4866583))
-                .addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, "55FCED67-E92A-486E-9800-B47F202C4386", 4, EntityAttributeModifier.Operation.ADDITION)
-                //.addAttributeModifier(EntityAttributes.GENERIC_ARMOR, "55FCED67-E92A-486E-9800-B47F202C4386", 1, EntityAttributeModifier.Operation.ADDITION)
-                .addAttributeModifier(EntityAttributes.GENERIC_ARMOR, "55FCED67-E92A-486E-9800-B47F202C4386", 6, EntityAttributeModifier.Operation.ADDITION));
+
 
         // amount = -0.10000000149011612D
 
@@ -71,6 +68,17 @@ public class EffectsKNB {
             }
         });
          */
+    }
+
+    public static void reg() {
+
+        guardianEffect = Registry.register(Registry.STATUS_EFFECT, guardianEffectIdentifier, (new BaseEffect(StatusEffectType.BENEFICIAL, 4866583))
+                .addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, "55FCED67-E92A-486E-9800-B47F202C4386", 2, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
+                //.addAttributeModifier(EntityAttributes.GENERIC_ARMOR, "55FCED67-E92A-486E-9800-B47F202C4386", 1, EntityAttributeModifier.Operation.ADDITION)
+                .addAttributeModifier(EntityAttributes.GENERIC_ARMOR, "55FCED67-E92A-486E-9800-B47F202C4386", 2, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
+                .addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, "55FCED67-E92A-486E-9800-B47F202C4386", .5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+
+//        guardianEffect = Registry.register(Registry.STATUS_EFFECT, guardianEffectIdentifier, guardianEffect);
     }
 
     private static class ReactiveEffect extends StatusEffect {
@@ -136,6 +144,15 @@ public class EffectsKNB {
 
         protected BaseEffect(StatusEffectType type, int color) {
             super(type, color);
+        }
+
+        @Override
+        public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+            entity.addVelocity(0, .2, 0);
+//           if (entity instanceof PlayerEntity) {
+//                PlayerEntity p = (PlayerEntity) entity;
+//            }
+            super.applyUpdateEffect(entity, amplifier);
         }
 
     }
